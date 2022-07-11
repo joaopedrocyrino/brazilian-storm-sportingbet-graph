@@ -1,12 +1,14 @@
-import 'reflect-metadata'
-import TypeOrmDatabase from './data'
+import Database from './data'
 import app from './app'
+import Contracts from './contracts'
 
-TypeOrmDatabase.connect()
-  .then(() => {
-    console.log('Connected with the database')
-    app.listen()
-      .then(({ url }) => { console.log(`🚀  Server ready at ${url}`) })
-      .catch(err => { console.log('❌ Failed to start server', err) })
+Database.init()
+
+Contracts.init()
+  .catch((err) => { console.log('❌ Failed to start contracts', err) })
+
+app.listen({ port: 5000 })
+  .then(({ url }) => {
+    console.log(`🚀  Server ready at ${url}`)
   })
-  .catch(err => { console.log('❌ Failed to connect with the database', err) })
+  .catch(err => { console.log('❌ Failed to start server', err) })
